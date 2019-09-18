@@ -1,0 +1,8 @@
+
+wbx_commerce.checkout_controller_render:
+  path: '/checkout'
+  defaults:
+    _controller: '\Drupal\wbx_commerce\Controller\CheckoutController::render'
+    _title: 'Checkout'
+  requirements:
+    _permission: 'access content'

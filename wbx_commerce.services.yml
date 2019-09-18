@@ -1,0 +1,6 @@
+services:
+  wbx_commerce.route_subscriber:
+    class: Drupal\wbx_commerce\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
+

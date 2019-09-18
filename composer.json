@@ -1,0 +1,11 @@
+{
+  "name": "wbxby/wbx_commerce",
+  "type": "drupal-module",
+  "description": "Some extra commerce functionalities",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",  
+  "minimum-stability": "dev", 
+  "require": { 
+    "drupal/commerce": "^2.0"
+  }
+}

@@ -1,0 +1,5 @@
+quantity:
+  version: 1.x
+  js:
+    js/quantity.js: {}
+    js/shipping.js: {}

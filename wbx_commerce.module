@@ -1,0 +1,51 @@
+<?php
+
+/**
+ * @file
+ * Contains wbx_commerce.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_help().
+ */
+function wbx_commerce_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the wbx_commerce module.
+    case 'help.page.wbx_commerce':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Improvements for Commerce, created by Webxayc') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+/**
+ * Implements hook_views_data_alter().
+ */
+function wbx_commerce_views_data_alter(array &$data) {
+  $data['commerce_order_item']['wbx_edit_quantity']['field'] = [
+    'title' => t('Quantity text field'),
+    'help' => t('Adds an AJAX text field for editing the quantity.'),
+    'id' => 'wbx_commerce_order_item_edit_quantity',
+  ];
+  $data['commerce_order_item']['wbx_commerce_views_item_remove_button']['field'] = [
+    'title' => t('Remove button (WBX Ajax)'),
+    'help' => t('Adds a button for removing (ajax) the order item.'),
+    'id' => 'wbx_commerce_views_item_remove_button',
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function wbx_commerce_form_commerce_checkout_flow_edit_form_alter(array &$form, FormStateInterface $form_state) {
+  $index = array_search('commerce_payment_validate_checkout_flow', $form['#validate'], TRUE);
+  if ($index !== FALSE) {
+    unset($form['#validate'][$index]);
+  }
+}
