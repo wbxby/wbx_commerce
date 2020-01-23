@@ -6,6 +6,7 @@ use Drupal\commerce_shipping\Plugin\Commerce\CheckoutPane\ShippingInformation;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Render\Element;
+use Drupal\profile\Entity\Profile;
 
 /**
  * Provides the shipping information pane.
@@ -72,7 +73,13 @@ class WBXShippingInformation extends ShippingInformation {
       $form_state->set('recalculate_shipping', TRUE);
       // The profile in form state needs to reflect the submitted values, since
       // it will be passed to the packers when the form is rebuilt.
-      $form_state->set('shipping_profile', $pane_form['shipping_profile']['#profile']);
+      if (isset($pane_form['shipping_profile']['#profile'])) {
+        $profile = $pane_form['shipping_profile']['#profile'];
+      }
+      else {
+        $profile = Profile::create(['type' => 'customer']);
+      }
+      $form_state->set('shipping_profile', $profile);
     }
 
     foreach ($shipment_indexes as $index) {

@@ -16,7 +16,7 @@
 
   Drupal.behaviors.shipping = {
     attach: function (context) {
-      $('.form-type-radio input[id*="shipping-method"]').change(function() {
+      $('.form-check input[id*="shipping-method"]').change(function() {
         clicker();
       });
       $('.form-type-radio input[id*="edit-person-type"]').change(function() {
