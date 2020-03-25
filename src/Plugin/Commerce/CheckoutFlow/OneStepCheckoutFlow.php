@@ -40,6 +40,11 @@ class OneStepCheckoutFlow extends CheckoutFlowWithPanesBase {
   protected $currentUser;
 
   /**
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $routeMatch;
+
+  /**
    * OneStepCheckoutFlow constructor.
    *
    * @param array $configuration
@@ -90,6 +95,7 @@ class OneStepCheckoutFlow extends CheckoutFlowWithPanesBase {
         }
       }
       $this->currentUser = $current_user;
+      $this->routeMatch = $route_match;
     }
 
   /**
@@ -128,10 +134,20 @@ class OneStepCheckoutFlow extends CheckoutFlowWithPanesBase {
     return $steps;
   }
 
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    if (!isset($form['#step_id'])) {
+      $form['#step_id'] = $this->routeMatch->getParameter('step');
+    }
+    parent::validateForm($form, $form_state);
+  }
+
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    if (!isset($form['#step_id'])) {
+      $form['#step_id'] = $this->routeMatch->getParameter('step');
+    }
     foreach ($this->getVisiblePanes($form['#step_id']) as $pane_id => $pane) {
       $pane->submitPaneForm($form[$pane_id], $form_state, $form);
     }
