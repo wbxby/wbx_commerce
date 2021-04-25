@@ -50,6 +50,11 @@ class WBXShippingInformation extends ShippingInformation {
           'type' => 'commerce_order_total_summary',
         ])
     ];
+    // Add shipments here to avoid pf clearing selected shipping method value
+    $pane_form['recalculate_shipping']['#limit_validation_errors'][] = [
+      'wbx_shipping_information',
+      'shipments',
+    ];
     return $pane_form;
   }
 
@@ -65,7 +70,7 @@ class WBXShippingInformation extends ShippingInformation {
       // The checkout step was submitted without shipping being calculated.
       // Force the recalculation now and reload the page.
       $recalculate = TRUE;
-      drupal_set_message('Please select a shipping method.', 'error');
+      \Drupal::messenger()->addError('Please select a shipping method.');
       $form_state->setRebuild(TRUE);
     }
 
@@ -102,6 +107,17 @@ class WBXShippingInformation extends ShippingInformation {
   public function submitPaneForm(array &$pane_form, FormStateInterface $form_state, array &$complete_form) {
     $form_state->setRebuild();
     parent::submitPaneForm($pane_form, $form_state, $complete_form);
+  }
+
+  /**
+   * Do not clear this values, because this breaks one page checkout.
+   * @param array $element
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return array
+   */
+  public static function clearValues(array $element, FormStateInterface $form_state) {
+    return $element;
   }
 
 }
